@@ -33,8 +33,11 @@ public class CuterCodeController {
 
     @GetMapping("/add")
     public String addCod(){
-        String filename = "C:\\TestMarkerovka\\FileKM\\order_99490942-8419-41c5-b121-f3429f650805_gtin_04603734326017_quantity_300_5000.csv";
-        codeService.save(new File(filename));
+//        Home
+        String fileName = "F:\\testMarkerovka\\order_99490942-8419-41c5-b121-f3429f650805_gtin_04603734326017_quantity_300_5000.csv";
+//        Work
+//        String fileName = "C:\\TestMarkerovka\\FileKM\\order_99490942-8419-41c5-b121-f3429f650805_gtin_04603734326017_quantity_300_5000.csv";
+        codeService.save(new File(fileName));
 //        return "redirect:/cuterCode";
         return "cuterCode";
     }

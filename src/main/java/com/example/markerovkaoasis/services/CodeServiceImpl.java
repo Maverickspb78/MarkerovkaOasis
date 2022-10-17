@@ -71,20 +71,33 @@ public class CodeServiceImpl implements CodeService{
         for (int i = 1; i <= productRepository.findAll().size(); i++) {
             productTemp = new ProductDTO();
             product = productRepository.findFirstById((long) i);
-            productTemp.setId(product.getId());
-            productTemp.setCodeProduct(product.getCodeProduct());
-            productTemp.setName(product.getName());
-            if (codeMarkRepository.findFirstByCodeProduct(product.getCodeProduct()) != null) {
-                productTemp.setDataOrder(codeMarkRepository.findFirstByCodeProduct(product.getCodeProduct()).getDataAdded());
-                productTemp.setNumberKm(codeMarkRepository.findAllByCodeProductAndIsPrintFalse(product.getCodeProduct()).size());
-                productTemp.setNumberPrintToDay(codeMarkRepository.findAllByCodeProductAndIsPrintTrueAndDataPrint(product.getCodeProduct(), LocalDate.now()).size());
-            } else {
-                productTemp.setNumberKm(0);
-                productTemp.setNumberPrintToDay(codeMarkRepository.findAllByCodeProductAndIsPrintTrueAndDataPrint(product.getCodeProduct(), LocalDate.now()).size());
-            }
-            lists.add(productTemp);
+            lists.add(productToProductDTO(productTemp, product));
         }
         return lists;
+    }
+
+    @Override
+    public List<ProductDTO> listProductForList(Long id) {
+        List<ProductDTO> lists = new ArrayList<>();
+        ProductDTO productTemp = new ProductDTO();
+        Product product = productRepository.findFirstById(id);
+        lists.add(productToProductDTO(productTemp, product));
+        return lists;
+    }
+
+    public ProductDTO productToProductDTO(ProductDTO productTemp, Product product){
+        productTemp.setId(product.getId());
+        productTemp.setCodeProduct(product.getCodeProduct());
+        productTemp.setName(product.getName());
+        if (codeMarkRepository.findFirstByCodeProduct(product.getCodeProduct()) != null) {
+            productTemp.setDataOrder(codeMarkRepository.findFirstByCodeProduct(product.getCodeProduct()).getDataAdded());
+            productTemp.setNumberKm(codeMarkRepository.findAllByCodeProductAndIsPrintFalse(product.getCodeProduct()).size());
+            productTemp.setNumberPrintToDay(codeMarkRepository.findAllByCodeProductAndIsPrintTrueAndDataPrint(product.getCodeProduct(), LocalDate.now()).size());
+        } else {
+            productTemp.setNumberKm(0);
+            productTemp.setNumberPrintToDay(codeMarkRepository.findAllByCodeProductAndIsPrintTrueAndDataPrint(product.getCodeProduct(), LocalDate.now()).size());
+        }
+        return productTemp;
     }
 
 }

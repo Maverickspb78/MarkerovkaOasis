@@ -7,9 +7,10 @@ import java.io.File;
 import java.util.List;
 
 public interface CodeService {
-    public List<CodeMark> findByCodeProductAndIsPrintFalse(String name);
-    public List<String> getCodeOnProduct();
-    public void save(File fileName);
-    public void createPrintFile(String codeProduct, int countCodes);
-    public List<ProductDTO> listProductForList();
+    List<CodeMark> findByCodeProductAndIsPrintFalse(String name);
+    List<String> getCodeOnProduct();
+    void save(File fileName);
+    void createPrintFile(String codeProduct, int countCodes);
+    List<ProductDTO> listProductForList();
+    List<ProductDTO> listProductForList(Long id);
 }
