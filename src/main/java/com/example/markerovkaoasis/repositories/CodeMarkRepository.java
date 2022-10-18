@@ -9,7 +9,6 @@ import java.util.List;
 
 @Repository
 public interface CodeMarkRepository extends JpaRepository<CodeMark, Long> {
-    CodeMark findByCode(String code);
     List<CodeMark> findAllByCodeProductAndIsPrintFalse(String codeProduct);
     List<CodeMark> findAllByCodeProductAndIsPrintTrueAndDataPrint(String codeProduct, LocalDate localDate);
     CodeMark findFirstByCodeProduct(String codeProduct);
