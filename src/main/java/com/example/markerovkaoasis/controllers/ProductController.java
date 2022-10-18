@@ -25,14 +25,7 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public String showProduct(@PathVariable(value = "id") Long id, Model model){
-        System.out.println(id);
-        System.out.println("size " + codeService.listProductForList(id).size());
-//        System.out.println(codeService.listProductForList(id).get(0).getId());
-//        System.out.println(productService.listCodes(id).get(0).getNa);
-
         model.addAttribute("listProd", codeService.listProductForList(id));
-//        model.addAttribute("product", productService.listCodes(id));
-
         return "productPage";
     }
 }

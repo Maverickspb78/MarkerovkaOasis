@@ -61,5 +61,12 @@
     </tr>
     </tbody>
 </table>
+    <div class="mb-3">
+        <form th:action="@{/cuterCode/add}" method="post" enctype="multipart/form-data">
+            <label for="formFile" class="form-label">Выберите файл с кодами маркеровки</label>
+            <input class="form-control" type="file" id="formFile">
+            <button type="submit" class="btn btn-primary">Загрузить КМ</button>
+        </form>
+    </div>
 </body>
 </html>
