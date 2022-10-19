@@ -2,6 +2,7 @@ package com.example.markerovkaoasis.services;
 
 import com.example.markerovkaoasis.DTO.ProductDTO;
 import com.example.markerovkaoasis.entities.CodeMark;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.List;
@@ -13,4 +14,5 @@ public interface CodeService {
     void createPrintFile(String codeProduct, int countCodes);
     List<ProductDTO> listProductForList();
     List<ProductDTO> listProductForList(Long id);
+    void addCodeFromFile(MultipartFile file);
 }

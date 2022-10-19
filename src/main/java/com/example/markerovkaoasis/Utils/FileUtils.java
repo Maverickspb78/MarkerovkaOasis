@@ -3,10 +3,9 @@ package com.example.markerovkaoasis.Utils;
 import com.example.markerovkaoasis.entities.CodeMark;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
@@ -59,16 +58,28 @@ public class FileUtils {
             for (CodeMark codeMark : codeMarkList) {
                 if (count < codeMarkList.size()) {
                     writer.write(codeMark.getCode() + "\n");
-                    System.out.println(codeMark.getCode());
                     count++;
                 } else {
                     writer.write(codeMark.getCode());
-                    System.out.println(codeMark.getCode());
                 }
             }
             writer.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public File downloadFile(MultipartFile file, File tempFile){
+        if (!file.isEmpty()) {
+            try {
+                byte[] bytes = file.getBytes();
+                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(tempFile));
+                stream.write(bytes);
+                stream.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return tempFile;
     }
 }

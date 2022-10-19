@@ -34,23 +34,8 @@ public class CuterCodeController {
     }
 
     @PostMapping("/add")
-    public String postAdd(@RequestParam(value = "file") MultipartFile file, Model model) {
-//        String uploadDir = "C:\\TestMarkerovka\\";
-        String uploadDir = "F:\\testMarkerovka\\1\\";
-        String fileName = uploadDir + file.getOriginalFilename();
-        File tempFile = new File(fileName);
-        if (!file.isEmpty()) {
-            try {
-                byte[] bytes = file.getBytes();
-                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(tempFile));
-                stream.write(bytes);
-                stream.close();
-                codeService.save(tempFile);
-                tempFile.delete();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+    public String postAdd(@RequestParam(value = "file") MultipartFile file) {
+        codeService.addCodeFromFile(file);
         return "redirect:/cuterCode";
     }
 

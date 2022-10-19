@@ -8,6 +8,7 @@ import com.example.markerovkaoasis.repositories.CodeMarkRepository;
 import com.example.markerovkaoasis.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CodeServiceImpl implements CodeService{
+public class CodeServiceImpl implements CodeService {
 
     private final CodeMarkRepository codeMarkRepository;
     private final FileUtils fileUtils;
@@ -35,9 +36,9 @@ public class CodeServiceImpl implements CodeService{
 
     @Override
     public void save(File fileName) {
-        try{
+        try {
             codeMarkRepository.saveAll(fileUtils.readToWriteBD(fileName));
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -64,7 +65,7 @@ public class CodeServiceImpl implements CodeService{
     }
 
     @Override
-    public List<ProductDTO> listProductForList(){
+    public List<ProductDTO> listProductForList() {
         List<ProductDTO> lists = new ArrayList<>();
         ProductDTO productTemp;
         Product product;
@@ -85,7 +86,7 @@ public class CodeServiceImpl implements CodeService{
         return lists;
     }
 
-    public ProductDTO productToProductDTO(ProductDTO productTemp, Product product){
+    public ProductDTO productToProductDTO(ProductDTO productTemp, Product product) {
         productTemp.setId(product.getId());
         productTemp.setCodeProduct(product.getCodeProduct());
         productTemp.setName(product.getName());
@@ -98,5 +99,15 @@ public class CodeServiceImpl implements CodeService{
             productTemp.setNumberPrintToDay(codeMarkRepository.findAllByCodeProductAndIsPrintTrueAndDataPrint(product.getCodeProduct(), LocalDate.now()).size());
         }
         return productTemp;
+    }
+
+    @Override
+    public void addCodeFromFile(MultipartFile file) {
+        String uploadDir = "C:\\TestMarkerovka\\1\\";
+//        String uploadDir = "F:\\testMarkerovka\\1\\";
+        String fileName = uploadDir + file.getOriginalFilename();
+        File tempFile = new File(fileName);
+        save(fileUtils.downloadFile(file, tempFile));
+        tempFile.delete();
     }
 }
