@@ -48,12 +48,12 @@
         <th>Кол-во в остатке</th>
         <th>Напечатано сегодня</th>
         <th>Дата заказа КМ</th>
-        <th> запас</th>
+        <th>запас</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="product : ${listProd}">
-        <td ><a style="text-decoration: none; color: rgb(255, 255, 255);" th:href="@{/product/{id}(id=${product.id})}"  th:text="${product.name}"></a></td>
+        <td th:text="${product.name}" >Имя</td>
         <td th:text="${product.numberKm}">Кол-во</td>
         <td th:text="${product.numberPrintToDay}">Кол-во</td>
         <td th:text="${product.dataOrder}"></td>
@@ -61,12 +61,5 @@
     </tr>
     </tbody>
 </table>
-    <div class="mb-3">
-        <form th:action="@{/cuterCode/add}" method="post" enctype="multipart/form-data">
-            <label for="formFile" class="form-label">Выберите файл с кодами маркеровки</label>
-            <input class="form-control" type="file" th:name="file" id="formFile">
-            <button type="submit" href="/cuterCode" class="btn btn-primary">Загрузить КМ</button>
-        </form>
-    </div>
 </body>
 </html>

@@ -22,14 +22,15 @@ public class FileUtils {
         List<CodeMark> codeMarkList = new ArrayList<>();
         Scanner scannerRead = new Scanner(file);
         String code;
-        while (scannerRead.hasNextLine()){
+        while (scannerRead.hasNextLine()) {
             code = scannerRead.nextLine();
             codeMarkList.add(CodeMark.builder().code(code)
-                    .codeProduct(code.substring(0,16))
+                    .codeProduct(code.substring(0, 16))
                     .dataAdded(LocalDate.now())
                     .fileNameAdded(file.getName())
                     .build());
         }
+        scannerRead.close();
         return codeMarkList;
     }
 

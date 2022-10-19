@@ -1,17 +1,19 @@
 package com.example.markerovkaoasis.controllers;
 
-import com.example.markerovkaoasis.DTO.ProductDTO;
 import com.example.markerovkaoasis.services.CodeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
-import java.util.List;
+import java.io.FileOutputStream;
 
 @Controller
 @RequiredArgsConstructor
@@ -26,30 +28,42 @@ public class CuterCodeController {
     }
 
     @GetMapping
-    public String showCuterCopePage(Model model){
+    public String showCuterCopePage(Model model) {
         model.addAttribute("listProd", codeService.listProductForList());
         return "cuterCode";
     }
 
-    @GetMapping("/add")
-    public String addCod(){
-        String filename = "C:\\TestMarkerovka\\FileKM\\order_99490942-8419-41c5-b121-f3429f650805_gtin_04603734326017_quantity_300_5000.csv";
-        codeService.save(new File(filename));
-//        return "redirect:/cuterCode";
-        return "cuterCode";
+    @PostMapping("/add")
+    public String postAdd(@RequestParam(value = "file") MultipartFile file, Model model) {
+//        String uploadDir = "C:\\TestMarkerovka\\";
+        String uploadDir = "F:\\testMarkerovka\\1\\";
+        String fileName = uploadDir + file.getOriginalFilename();
+        File tempFile = new File(fileName);
+        if (!file.isEmpty()) {
+            try {
+                byte[] bytes = file.getBytes();
+                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(tempFile));
+                stream.write(bytes);
+                stream.close();
+                codeService.save(tempFile);
+                tempFile.delete();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return "redirect:/cuterCode";
     }
 
     @GetMapping("/findProductNotPrint")
-    public String findByProductCodeAndNotPrint(){
+    public String findByProductCodeAndNotPrint() {
         String codeProduct = "0104603734326017";
-//        codeService.findByCodeProductAndIsPrintFalse(codeProduct).forEach(System.out::println);
         codeService.findByCodeProductAndIsPrintFalse(codeProduct);
         return "redirect:/cuterCode";
     }
 
     @GetMapping("/createFile")
     public String createFileAndWrite(@RequestParam("codeProduct") String codeProduct,
-                                     @RequestParam("countCodes") int countCodes){
+                                     @RequestParam("countCodes") int countCodes) {
         codeService.createPrintFile(codeProduct, countCodes);
         return "redirect:/cuterCode";
     }
