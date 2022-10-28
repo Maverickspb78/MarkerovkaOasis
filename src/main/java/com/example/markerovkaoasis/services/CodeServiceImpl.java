@@ -7,6 +7,7 @@ import com.example.markerovkaoasis.entities.Product;
 import com.example.markerovkaoasis.repositories.CodeMarkRepository;
 import com.example.markerovkaoasis.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CodeServiceImpl implements CodeService {
@@ -38,6 +40,7 @@ public class CodeServiceImpl implements CodeService {
     public void save(File fileName) {
         try {
             codeMarkRepository.saveAll(fileUtils.readToWriteBD(fileName));
+            log.debug("file name {} ", fileName.getName());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -46,6 +49,7 @@ public class CodeServiceImpl implements CodeService {
     @Override
     public void createPrintFile(String codeProduct, int countCodes) {
         List<CodeMark> codeMarkList = findByCodeProductAndIsPrintFalse(codeProduct);
+        log.debug("CodeProduct: {}, countCodes: {}", codeProduct, countCodes);
         if (codeMarkList.size() >= countCodes) {
             codeMarkList.subList((countCodes), codeMarkList.size()).clear();
             CodeMark codeMarkTemp;
@@ -53,12 +57,14 @@ public class CodeServiceImpl implements CodeService {
             String fileName = codeMarkList.get(0).getFileNameAdded().split("quantity_")[0];
             String pathName = "D:\\Test\\".concat(dateNowString.replace("-", "\\")).concat("\\");
             String fileNamePrintFile = pathName.concat(fileName).concat("quantity_").concat("" + codeMarkList.size()).concat(".csv");
+            log.debug("fileNamePrintFile: {}", fileNamePrintFile);
             for (int i = 0; i <= codeMarkList.size() - 1; i++) {
                 codeMarkTemp = codeMarkList.get(i);
                 codeMarkTemp.setDataPrint(LocalDate.now());
                 codeMarkTemp.setPrint(true);
                 codeMarkTemp.setFileName(fileName);
             }
+            log.debug("count codmark: {}", codeMarkList.size());
             codeMarkRepository.saveAll(codeMarkList);
             fileUtils.createPrintFile(codeMarkList, fileNamePrintFile);
         }

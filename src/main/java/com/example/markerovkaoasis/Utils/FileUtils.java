@@ -2,6 +2,7 @@ package com.example.markerovkaoasis.Utils;
 
 import com.example.markerovkaoasis.entities.CodeMark;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class FileUtils {
@@ -23,6 +25,7 @@ public class FileUtils {
         String code;
         while (scannerRead.hasNextLine()) {
             code = scannerRead.nextLine();
+            log.debug("code: {} ", code);
             codeMarkList.add(CodeMark.builder().code(code)
                     .codeProduct(code.substring(0, 16))
                     .dataAdded(LocalDate.now())
