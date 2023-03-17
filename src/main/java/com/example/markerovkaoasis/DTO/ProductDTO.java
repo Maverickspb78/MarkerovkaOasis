@@ -12,6 +12,7 @@ public class ProductDTO {
     private Long id;
     private String name;
     private String CodeProduct;
+    private String Company;
     private int numberKm;
     private int numberPrintToDay;
     private LocalDate dataOrder;

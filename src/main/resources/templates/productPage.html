@@ -32,15 +32,15 @@
     </nav>
 </head>
 <body>
-<div>
-    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-        <label class="btn btn-outline-primary" for="btnradio1">Гидротехнология</label>
+<!--<div>-->
+<!--    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">-->
+<!--        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>-->
+<!--        <label class="btn btn-outline-primary" for="btnradio1">Гидротехнология</label>-->
 
-        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-        <label class="btn btn-outline-primary" for="btnradio2">Оазис</label>
-    </div>
-</div>
+<!--        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">-->
+<!--        <label class="btn btn-outline-primary" for="btnradio2">Оазис</label>-->
+<!--    </div>-->
+<!--</div>-->
 <table>
     <thead>
     <tr>
@@ -61,5 +61,24 @@
     </tr>
     </tbody>
 </table>
+
+<div class="codeNumber">
+<!--    <form th:object="KmForm" th:action="@{/cuterCode}"  th:method="post">-->
+    <form  th:action="@{/cuterCode}"  th:method="post">
+    <div class="mb-3">
+        <label for="inputNumberKM" class="form-label">Количество кодов</label>
+        <input type="number" th:value="numberKM" class="form-control" id="inputNumberKM" aria-describedby="numberKMHelp"  >
+<!--        <input type="number" th:field="numberKM" class="form-control" id="inputNumberKM" aria-describedby="numberKMHelp"  >-->
+        <div id="numberKMHelp" class="form-text">Введите количество кодов для печати</div>
+    </div>
+    <div class="mb-3">
+        <label for="dateForPrint" class="form-label">Дата для печати</label>
+        <input type="date" th:value="data" class="form-control" id="dateForPrint" placeholder="Another input placeholder">
+<!--        <input type="date" th:field="data" class="form-control" id="dateForPrint" placeholder="Another input placeholder">-->
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</div>
+
 </body>
 </html>

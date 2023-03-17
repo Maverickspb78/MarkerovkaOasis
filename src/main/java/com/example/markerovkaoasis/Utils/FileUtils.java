@@ -19,6 +19,7 @@ import java.util.Scanner;
 @RequiredArgsConstructor
 public class FileUtils {
 
+//    Чтение из файла и запись
     public List<CodeMark> readToWriteBD(File file) throws FileNotFoundException {
         List<CodeMark> codeMarkList = new ArrayList<>();
         Scanner scannerRead = new Scanner(file);
@@ -36,6 +37,7 @@ public class FileUtils {
         return codeMarkList;
     }
 
+//    Создание файла Печати КМ и записи КМ в файл.
     public void createPrintFile(List<CodeMark> codeMarkList, String fileNamePrintFile) {
         StringBuilder stringBuilder = new StringBuilder(fileNamePrintFile);
         int countC = 0;
@@ -72,6 +74,7 @@ public class FileUtils {
         }
     }
 
+//    Скачивание файла с КМ.
     public File downloadFile(MultipartFile file, File tempFile){
         if (!file.isEmpty()) {
             try {
