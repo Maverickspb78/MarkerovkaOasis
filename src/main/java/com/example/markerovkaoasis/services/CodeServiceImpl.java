@@ -15,6 +15,7 @@ import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Slf4j
 @Service
@@ -46,6 +47,7 @@ public class CodeServiceImpl implements CodeService {
         }
     }
 
+//    Создание файла .CSV для печати кодов маркеровки.
     @Override
     public void createPrintFile(String codeProduct, int countCodes) {
         List<CodeMark> codeMarkList = findByCodeProductAndIsPrintFalse(codeProduct);
@@ -55,8 +57,18 @@ public class CodeServiceImpl implements CodeService {
             CodeMark codeMarkTemp;
             String dateNowString = "" + LocalDate.now();
             String fileName = codeMarkList.get(0).getFileNameAdded().split("quantity_")[0];
-            String pathName = "D:\\Test\\".concat(dateNowString.replace("-", "\\")).concat("\\");
+            String pathName = "C:\\TestMarkerovka\\".concat(dateNowString.replace("-", "\\")).concat("\\");
             String fileNamePrintFile = pathName.concat(fileName).concat("quantity_").concat("" + codeMarkList.size()).concat(".csv");
+            File dir = new File(pathName);
+            File file = new File(fileNamePrintFile);
+            if (!dir.exists()){
+                dir.mkdirs();
+            }
+            while (file.exists()){
+                fileName = Math.random() + "_" + fileName;
+                fileNamePrintFile = pathName.concat(fileName).concat("quantity_").concat("" + codeMarkList.size()).concat(".csv");
+                file = new File(fileName);
+            }
             log.debug("fileNamePrintFile: {}", fileNamePrintFile);
             for (int i = 0; i <= codeMarkList.size() - 1; i++) {
                 codeMarkTemp = codeMarkList.get(i);
@@ -96,6 +108,7 @@ public class CodeServiceImpl implements CodeService {
         productTemp.setId(product.getId());
         productTemp.setCodeProduct(product.getCodeProduct());
         productTemp.setName(product.getName());
+        productTemp.setCompany(product.getCompany());
         if (codeMarkRepository.findFirstByCodeProduct(product.getCodeProduct()) != null) {
             productTemp.setDataOrder(codeMarkRepository.findFirstByCodeProduct(product.getCodeProduct()).getDataAdded());
             productTemp.setNumberKm(codeMarkRepository.findAllByCodeProductAndIsPrintFalse(product.getCodeProduct()).size());
@@ -107,11 +120,16 @@ public class CodeServiceImpl implements CodeService {
         return productTemp;
     }
 
+//    Скачивание файла .CSV с КМ.
     @Override
     public void addCodeFromFile(MultipartFile file) {
-        String uploadDir = "C:\\TestMarkerovka\\1\\";
-//        String uploadDir = "F:\\testMarkerovka\\1\\";
+        String uploadDir = "C:\\TestMarkerovka\\1\\";  //Work
+//        String uploadDir = "F:\\testMarkerovka\\1\\"; //Home
         String fileName = uploadDir + file.getOriginalFilename();
+        File folder = new File(uploadDir);
+        if (!folder.exists()){
+            folder.mkdirs();
+        }
         File tempFile = new File(fileName);
         save(fileUtils.downloadFile(file, tempFile));
         tempFile.delete();

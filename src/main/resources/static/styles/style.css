@@ -73,3 +73,8 @@ table tbody tr:hover td {
     background-color: #202223;
 	cursor: pointer;
 }
+
+.codeNumber{
+    height: 200px;
+    width: 200px;
+}
